@@ -1,0 +1,44 @@
+#lang sicp
+(define book-list (cons '() '()))
+
+
+(define (add-book b-id b-name q-left author genre price)
+  (define (final-book book-list) 
+    (if (null?  (cdr book-list)) book-list (final-book (cdr book-list))))
+  (define (create-book b-id b-name q-left author genre price)
+  (cons (list(cons 'Book_id b-id) (cons 'Book-Name b-name)
+              (cons 'Quantity-Left q-left)
+              (cons 'Author author)
+              (cons 'Genre genre)
+              (cons 'Price price)) '()))
+  (let ((last-book (final-book book-list)))
+        (set-cdr! last-book (create-book b-id b-name q-left author genre price))))
+
+
+(add-book 1 'DL 5 'Ian 'Data-Science 1000)
+(add-book 2 'ML 10 'Jeremy 'Machine-Learning 3000)
+(add-book 3 'HarryPotter  5 'JKR 'Fiction 1000)
+(add-book 4 'Keras 10 'KG 'Machine-Learning 3000)
+(add-book 5 'Chronicles-of-Narnia 5  'CNG 'Fiction 1000)
+(add-book 6  'Tirrukural 10 'Tiruvalluvar 'Tamil 3000)
+(add-book 7 'Einstein 5 'AEinstein 'Autobiographies 1000)
+
+
+
+(define (find-by-id book-id book-list)
+  (if (null? (cdr book-list)) 'Iteration-completed
+  (if (= book-id (cdaadr book-list))
+      (display (cadr book-list))
+      (find-by-id book-id (cdr book-list)))))
+
+(define (find-by-name book-name book-list)
+  (if (null? (cdr book-list)) 'Iteration-completed
+      (if(eq? book-name (cdr (cadadr book-list)))
+         (display (cadr book-list))
+         (find-by-name book-name (cdr book-list)))))
+
+(define (find-by-genre genre book-list)
+   (if (null? (cdr book-list)) 'Iteration-completed
+  (if (eq? genre (cdr (caddr (cddadr book-list))))
+      (begin (display (cadr book-list)) (display "\n") (find-by-genre genre (cdr book-list)))
+      (find-by-genre genre (cdr book-list)))))
